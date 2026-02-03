@@ -45,7 +45,8 @@ export class VampireSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       createDiary: VampireSheet.#onCreateDiary,
       addJournalEntry: VampireSheet.#onAddJournalEntry,
       endGame: VampireSheet.#onEndGame,
-      editImage: VampireSheet.#onEditImage
+      editImage: VampireSheet.#onEditImage,
+      launchWizard: VampireSheet.#onLaunchWizard
     },
     form: {
       submitOnChange: true
@@ -105,6 +106,9 @@ export class VampireSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     // Game state
     context.isGameOver = context.system.gameState.ended;
+
+    // Check if actor needs wizard (for showing the wizard button prominently)
+    context.needsWizard = game.tyov?.actorNeedsWizard?.(this.actor) ?? false;
 
     // Tabs
     context.tabs = this._prepareTabs(options);
@@ -480,5 +484,14 @@ export class VampireSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       }
     });
     fp.render(true);
+  }
+
+  static async #onLaunchWizard(event, target) {
+    event.preventDefault();
+    if (game.tyov?.launchCharacterWizard) {
+      game.tyov.launchCharacterWizard(this.actor);
+    } else {
+      ui.notifications.error("Character creation wizard not available.");
+    }
   }
 }

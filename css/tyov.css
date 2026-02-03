@@ -125,6 +125,82 @@
   color: var(--tyov-secondary);
 }
 
+.tyov .wizard-button {
+  background: var(--tyov-gold);
+  color: white;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tyov .wizard-button:hover {
+  background: var(--tyov-secondary);
+  transform: scale(1.1);
+}
+
+.tyov .wizard-button i {
+  margin: 0;
+}
+
+/* New Character Notice */
+.tyov .new-character-notice {
+  background: linear-gradient(135deg, #2c1810, #1a0d08);
+  border: 2px solid var(--tyov-gold);
+  margin: 0;
+  padding: 1rem;
+}
+
+.tyov .new-character-notice .notice-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--tyov-background);
+}
+
+.tyov .new-character-notice .notice-content > i {
+  font-size: 2rem;
+  color: var(--tyov-gold);
+}
+
+.tyov .new-character-notice .notice-text {
+  flex: 1;
+}
+
+.tyov .new-character-notice .notice-text strong {
+  color: var(--tyov-gold);
+  font-size: 1.1rem;
+}
+
+.tyov .new-character-notice .notice-text p {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.tyov .new-character-notice .launch-wizard-button {
+  background: var(--tyov-gold);
+  color: var(--tyov-primary);
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tyov .new-character-notice .launch-wizard-button:hover {
+  background: #d4a017;
+  transform: scale(1.05);
+}
+
 /* =============================================================================
    PROMPT CONTROLS
 ============================================================================= */
@@ -920,6 +996,518 @@
 
   .tyov .add-character,
   .tyov .add-resource {
+    flex-direction: column;
+  }
+}
+
+/* =============================================================================
+   CHARACTER CREATION WIZARD
+============================================================================= */
+.tyov.character-wizard {
+  background: var(--tyov-background);
+  color: var(--tyov-text);
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+.tyov.character-wizard .window-header {
+  background: var(--tyov-primary);
+}
+
+.tyov.character-wizard .wizard-container {
+  padding: 1.5rem;
+}
+
+/* Progress Indicator */
+.tyov.character-wizard .wizard-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--tyov-paper);
+  border-radius: 8px;
+  border: 1px solid var(--tyov-border);
+}
+
+.tyov.character-wizard .progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 70px;
+}
+
+.tyov.character-wizard .step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--tyov-border);
+  color: var(--tyov-text);
+  border-radius: 50%;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+  transition: all 0.3s;
+}
+
+.tyov.character-wizard .progress-step.active .step-number {
+  background: var(--tyov-secondary);
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(92, 58, 33, 0.4);
+}
+
+.tyov.character-wizard .progress-step.complete .step-number {
+  background: var(--tyov-success);
+  color: white;
+}
+
+.tyov.character-wizard .step-label {
+  font-size: 0.7rem;
+  color: var(--tyov-muted);
+  text-align: center;
+}
+
+.tyov.character-wizard .progress-step.active .step-label {
+  color: var(--tyov-secondary);
+  font-weight: bold;
+}
+
+.tyov.character-wizard .progress-line {
+  flex: 1;
+  max-width: 40px;
+  height: 3px;
+  background: var(--tyov-border);
+  margin: 0 0.25rem;
+  margin-bottom: 1rem;
+  transition: background 0.3s;
+}
+
+.tyov.character-wizard .progress-line.complete {
+  background: var(--tyov-success);
+}
+
+/* Step Content */
+.tyov.character-wizard .wizard-step-content {
+  background: var(--tyov-paper);
+  border: 1px solid var(--tyov-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  min-height: 400px;
+}
+
+.tyov.character-wizard .step-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--tyov-accent);
+}
+
+.tyov.character-wizard .step-header h2 {
+  color: var(--tyov-primary);
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+}
+
+.tyov.character-wizard .step-description {
+  color: var(--tyov-text);
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.tyov.character-wizard .step-instruction {
+  color: var(--tyov-secondary);
+  font-style: italic;
+  background: linear-gradient(135deg, #f8f0d8, #f0e8c8);
+  padding: 0.75rem;
+  border-radius: 4px;
+  border-left: 4px solid var(--tyov-gold);
+}
+
+/* Form Elements */
+.tyov.character-wizard .form-group {
+  margin-bottom: 1rem;
+}
+
+.tyov.character-wizard .form-group label {
+  display: block;
+  font-weight: bold;
+  color: var(--tyov-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.tyov.character-wizard .form-group .required {
+  color: var(--tyov-danger);
+}
+
+.tyov.character-wizard .field-hint {
+  font-size: 0.85rem;
+  color: var(--tyov-muted);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.tyov.character-wizard .form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.tyov.character-wizard .form-row .form-group {
+  flex: 1;
+}
+
+.tyov.character-wizard .flex-grow {
+  flex-grow: 1;
+}
+
+.tyov.character-wizard input[type="text"],
+.tyov.character-wizard textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--tyov-border);
+  border-radius: 4px;
+  background: white;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.tyov.character-wizard textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.tyov.character-wizard input:focus,
+.tyov.character-wizard textarea:focus {
+  border-color: var(--tyov-accent);
+  outline: none;
+  box-shadow: 0 0 5px rgba(139, 69, 19, 0.3);
+}
+
+/* Example Boxes */
+.tyov.character-wizard .example-box {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px dashed var(--tyov-border);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.tyov.character-wizard .example-box.small {
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.tyov.character-wizard .example-box h4 {
+  color: var(--tyov-secondary);
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.tyov.character-wizard .example-box ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.tyov.character-wizard .example-box li {
+  color: var(--tyov-muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  font-style: italic;
+}
+
+.tyov.character-wizard .example-columns {
+  display: flex;
+  gap: 2rem;
+}
+
+.tyov.character-wizard .example-column {
+  flex: 1;
+}
+
+/* Add Forms */
+.tyov.character-wizard .add-mortal-form,
+.tyov.character-wizard .add-form {
+  background: var(--tyov-background);
+  border: 1px solid var(--tyov-border);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tyov.character-wizard .add-button {
+  background: var(--tyov-secondary);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.tyov.character-wizard .add-button:hover {
+  background: var(--tyov-primary);
+}
+
+/* Trait Lists */
+.tyov.character-wizard .trait-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tyov.character-wizard .trait-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--tyov-background);
+  border: 1px solid var(--tyov-border);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.tyov.character-wizard .trait-name {
+  font-weight: bold;
+  color: var(--tyov-primary);
+}
+
+.tyov.character-wizard .trait-desc {
+  color: var(--tyov-muted);
+  font-style: italic;
+  flex: 1;
+}
+
+.tyov.character-wizard .remove-button {
+  background: var(--tyov-danger);
+  color: white;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  margin-left: auto;
+}
+
+.tyov.character-wizard .remove-button:hover {
+  background: #660000;
+}
+
+/* Section Headers */
+.tyov.character-wizard .skills-section,
+.tyov.character-wizard .resources-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--tyov-border);
+}
+
+.tyov.character-wizard .skills-section h3,
+.tyov.character-wizard .resources-section h3,
+.tyov.character-wizard .immortal-section h3,
+.tyov.character-wizard .mark-section h3,
+.tyov.character-wizard .transformation-section h3 {
+  color: var(--tyov-secondary);
+  margin: 0 0 0.25rem 0;
+}
+
+.tyov.character-wizard .section-hint {
+  font-size: 0.85rem;
+  color: var(--tyov-muted);
+  margin-bottom: 0.75rem;
+}
+
+/* Checkbox Label */
+.tyov.character-wizard .checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Step 4: Traits Reference */
+.tyov.character-wizard .traits-reference {
+  background: linear-gradient(135deg, #f8f0d8, #f0e8c8);
+  border: 2px solid var(--tyov-gold);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tyov.character-wizard .traits-reference h4 {
+  color: var(--tyov-gold);
+  margin: 0 0 0.75rem 0;
+}
+
+.tyov.character-wizard .trait-columns {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.tyov.character-wizard .trait-column {
+  flex: 1;
+  min-width: 150px;
+}
+
+.tyov.character-wizard .trait-column strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--tyov-secondary);
+}
+
+.tyov.character-wizard .trait-tag {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  margin: 0.1rem;
+}
+
+.tyov.character-wizard .trait-tag.mortal {
+  background: rgba(139, 0, 0, 0.1);
+  color: var(--tyov-danger);
+  border: 1px solid var(--tyov-danger);
+}
+
+.tyov.character-wizard .trait-tag.skill {
+  background: rgba(45, 80, 22, 0.1);
+  color: var(--tyov-success);
+  border: 1px solid var(--tyov-success);
+}
+
+.tyov.character-wizard .trait-tag.resource {
+  background: rgba(92, 58, 33, 0.1);
+  color: var(--tyov-secondary);
+  border: 1px solid var(--tyov-secondary);
+}
+
+/* Step 5: Sections */
+.tyov.character-wizard .immortal-section,
+.tyov.character-wizard .mark-section,
+.tyov.character-wizard .transformation-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--tyov-border);
+}
+
+.tyov.character-wizard .transformation-section {
+  border-bottom: none;
+}
+
+/* Validation Warning */
+.tyov.character-wizard .validation-warning {
+  background: rgba(139, 0, 0, 0.1);
+  color: var(--tyov-danger);
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+  border: 1px solid var(--tyov-danger);
+}
+
+/* Navigation */
+.tyov.character-wizard .wizard-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--tyov-paper);
+  border-radius: 8px;
+  border: 1px solid var(--tyov-border);
+}
+
+.tyov.character-wizard .nav-spacer {
+  flex: 1;
+}
+
+.tyov.character-wizard .nav-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.tyov.character-wizard .nav-button.prev {
+  background: var(--tyov-border);
+  color: var(--tyov-text);
+}
+
+.tyov.character-wizard .nav-button.prev:hover {
+  background: var(--tyov-muted);
+  color: white;
+}
+
+.tyov.character-wizard .nav-button.next {
+  background: var(--tyov-secondary);
+  color: white;
+}
+
+.tyov.character-wizard .nav-button.next:hover {
+  background: var(--tyov-primary);
+}
+
+.tyov.character-wizard .nav-button.finish {
+  background: var(--tyov-success);
+  color: white;
+}
+
+.tyov.character-wizard .nav-button.finish:hover {
+  background: #1e3a10;
+}
+
+.tyov.character-wizard .nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tyov.character-wizard .nav-button i {
+  margin: 0 0.25rem;
+}
+
+/* Creation Complete Message */
+.tyov-creation-complete {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #2c1810, #1a0d08);
+  color: var(--tyov-background);
+  border-radius: 8px;
+  text-align: center;
+  border: 2px solid var(--tyov-gold);
+}
+
+.tyov-creation-complete h2 {
+  color: var(--tyov-gold);
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .tyov.character-wizard .wizard-progress {
+    flex-wrap: wrap;
+  }
+
+  .tyov.character-wizard .progress-line {
+    display: none;
+  }
+
+  .tyov.character-wizard .step-label {
+    display: none;
+  }
+
+  .tyov.character-wizard .form-row {
+    flex-direction: column;
+  }
+
+  .tyov.character-wizard .example-columns {
+    flex-direction: column;
+  }
+
+  .tyov.character-wizard .trait-columns {
     flex-direction: column;
   }
 }
