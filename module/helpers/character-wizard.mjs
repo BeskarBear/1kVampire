@@ -126,6 +126,81 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     return context;
   }
 
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    // Add input listeners to dynamically update the Next/Finish button state
+    const form = this.element;
+    if (!form) return;
+
+    const nextButton = form.querySelector('[data-action="nextStep"], [data-action="finishCreation"]');
+    if (!nextButton) return;
+
+    // Get all input fields that affect validation for the current step
+    const inputFields = this._getValidationInputs(form);
+
+    // Add input listeners to each field
+    inputFields.forEach(input => {
+      input.addEventListener('input', () => this._updateButtonState(nextButton));
+    });
+
+    // Initial button state update based on current form values
+    this._updateButtonState(nextButton);
+  }
+
+  _getValidationInputs(form) {
+    switch (this.currentStep) {
+      case 1:
+        return form.querySelectorAll('[name="mortalName"], [name="firstExperience"]');
+      case 4:
+        return form.querySelectorAll('[name="experience2"], [name="experience3"], [name="experience4"]');
+      case 5:
+        return form.querySelectorAll('[name="immortalName"], [name="markDescription"], [name="transformationExperience"]');
+      default:
+        return [];
+    }
+  }
+
+  _updateButtonState(button) {
+    const form = this.element;
+    if (!form || !button) return;
+
+    let isValid = false;
+
+    switch (this.currentStep) {
+      case 1: {
+        const mortalName = form.querySelector('[name="mortalName"]')?.value?.trim() || "";
+        const firstExperience = form.querySelector('[name="firstExperience"]')?.value?.trim() || "";
+        isValid = mortalName.length > 0 && firstExperience.length > 0;
+        break;
+      }
+      case 2:
+        isValid = this.wizardData.mortals.length >= 3 &&
+                  this.wizardData.mortals.every(m => m.name.trim().length > 0);
+        break;
+      case 3:
+        isValid = this.wizardData.skills.length >= 3 &&
+                  this.wizardData.resources.length >= 3;
+        break;
+      case 4: {
+        const exp2 = form.querySelector('[name="experience2"]')?.value?.trim() || "";
+        const exp3 = form.querySelector('[name="experience3"]')?.value?.trim() || "";
+        const exp4 = form.querySelector('[name="experience4"]')?.value?.trim() || "";
+        isValid = exp2.length > 0 && exp3.length > 0 && exp4.length > 0;
+        break;
+      }
+      case 5: {
+        const immortalName = form.querySelector('[name="immortalName"]')?.value?.trim() || "";
+        const markDescription = form.querySelector('[name="markDescription"]')?.value?.trim() || "";
+        const transformationExperience = form.querySelector('[name="transformationExperience"]')?.value?.trim() || "";
+        isValid = immortalName.length > 0 && markDescription.length > 0 && transformationExperience.length > 0;
+        break;
+      }
+    }
+
+    button.disabled = !isValid;
+  }
+
   _getStepInfo() {
     const steps = {
       1: {
@@ -367,6 +442,50 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
   async _applyWizardDataToActor() {
     const data = this.wizardData;
 
+    // Build the complete memories array (Foundry doesn't support nested array dot notation)
+    const memories = [
+      {
+        id: "memory-1",
+        theme: "",
+        experiences: [data.firstExperience, "", ""],
+        inDiary: false,
+        struckOut: false,
+        published: false
+      },
+      {
+        id: "memory-2",
+        theme: "",
+        experiences: [data.experience2, "", ""],
+        inDiary: false,
+        struckOut: false,
+        published: false
+      },
+      {
+        id: "memory-3",
+        theme: "",
+        experiences: [data.experience3, "", ""],
+        inDiary: false,
+        struckOut: false,
+        published: false
+      },
+      {
+        id: "memory-4",
+        theme: "",
+        experiences: [data.experience4, "", ""],
+        inDiary: false,
+        struckOut: false,
+        published: false
+      },
+      {
+        id: "memory-5",
+        theme: "",
+        experiences: [data.transformationExperience, "", ""],
+        inDiary: false,
+        struckOut: false,
+        published: false
+      }
+    ];
+
     // Build the update object
     const updateData = {
       "name": data.mortalName,
@@ -375,20 +494,8 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
       "system.biography.era": data.era,
       "system.biography.currentName": data.mortalName,
 
-      // Memory 1: First experience (mortal life)
-      "system.memories.0.experiences.0": data.firstExperience,
-
-      // Memory 2: Second experience (combining traits)
-      "system.memories.1.experiences.0": data.experience2,
-
-      // Memory 3: Third experience (combining traits)
-      "system.memories.2.experiences.0": data.experience3,
-
-      // Memory 4: Fourth experience (combining traits)
-      "system.memories.3.experiences.0": data.experience4,
-
-      // Memory 5: Transformation experience
-      "system.memories.4.experiences.0": data.transformationExperience,
+      // Memories (must be passed as complete array)
+      "system.memories": memories,
 
       // Skills (3 from mortal life)
       "system.skills": data.skills.map(s => ({
