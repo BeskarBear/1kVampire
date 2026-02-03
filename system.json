@@ -1,0 +1,34 @@
+{
+  "id": "tyov",
+  "title": "Thousand Year Old Vampire",
+  "description": "A solo journaling RPG where you chronicle the unlife of a vampire over many centuries, from the loss of mortality to their inevitable destruction.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "13"
+  },
+  "authors": [
+    {
+      "name": "Based on the game by Tim Hutchings"
+    }
+  ],
+  "esmodules": ["module/tyov.mjs"],
+  "styles": ["css/tyov.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "primaryTokenAttribute": null,
+  "secondaryTokenAttribute": null,
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  },
+  "socket": false,
+  "url": "",
+  "manifest": "",
+  "download": ""
+}

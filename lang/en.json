@@ -1,0 +1,26 @@
+{
+  "TYOV.SheetLabels.Vampire": "Vampire Chronicle",
+
+  "TYOV.Tabs.Memories": "Memories",
+  "TYOV.Tabs.Traits": "Skills & Resources",
+  "TYOV.Tabs.Characters": "Characters",
+  "TYOV.Tabs.Journal": "Journal",
+
+  "TYOV.Memory": "Memory",
+  "TYOV.Experience": "Experience",
+  "TYOV.Skill": "Skill",
+  "TYOV.Resource": "Resource",
+  "TYOV.Character": "Character",
+  "TYOV.Mark": "Mark",
+  "TYOV.Diary": "Diary",
+
+  "TYOV.Mortal": "Mortal",
+  "TYOV.Immortal": "Immortal",
+
+  "TYOV.Checked": "Checked",
+  "TYOV.Unchecked": "Unchecked",
+  "TYOV.Lost": "Lost",
+  "TYOV.Stationary": "Stationary",
+
+  "TYOV.GameOver": "Game Over"
+}
