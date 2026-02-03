@@ -22,5 +22,9 @@
   "TYOV.Lost": "Lost",
   "TYOV.Stationary": "Stationary",
 
-  "TYOV.GameOver": "Game Over"
+  "TYOV.GameOver": "Game Over",
+
+  "TYOV.ContextMenu.LaunchWizard": "Character Creation Wizard",
+  "TYOV.Wizard.Title": "Vampire Creation",
+  "TYOV.Wizard.LaunchButton": "Launch Creation Wizard"
 }

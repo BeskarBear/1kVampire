@@ -1,0 +1,395 @@
+{{!-- ============================================================================
+  THOUSAND YEAR OLD VAMPIRE - Character Creation Wizard
+  ============================================================================ --}}
+
+<div class="wizard-container">
+  {{!-- Step Progress Indicator --}}
+  <div class="wizard-progress">
+    <div class="progress-step {{#if (eq step 1)}}active{{/if}} {{#if (math step '>' 1)}}complete{{/if}}">
+      <span class="step-number">1</span>
+      <span class="step-label">Mortal Life</span>
+    </div>
+    <div class="progress-line {{#if (math step '>' 1)}}complete{{/if}}"></div>
+    <div class="progress-step {{#if (eq step 2)}}active{{/if}} {{#if (math step '>' 2)}}complete{{/if}}">
+      <span class="step-number">2</span>
+      <span class="step-label">Relationships</span>
+    </div>
+    <div class="progress-line {{#if (math step '>' 2)}}complete{{/if}}"></div>
+    <div class="progress-step {{#if (eq step 3)}}active{{/if}} {{#if (math step '>' 3)}}complete{{/if}}">
+      <span class="step-number">3</span>
+      <span class="step-label">Skills & Resources</span>
+    </div>
+    <div class="progress-line {{#if (math step '>' 3)}}complete{{/if}}"></div>
+    <div class="progress-step {{#if (eq step 4)}}active{{/if}} {{#if (math step '>' 4)}}complete{{/if}}">
+      <span class="step-number">4</span>
+      <span class="step-label">Memories</span>
+    </div>
+    <div class="progress-line {{#if (math step '>' 4)}}complete{{/if}}"></div>
+    <div class="progress-step {{#if (eq step 5)}}active{{/if}}">
+      <span class="step-number">5</span>
+      <span class="step-label">Transformation</span>
+    </div>
+  </div>
+
+  {{!-- Step Content --}}
+  <div class="wizard-step-content">
+    <div class="step-header">
+      <h2>{{stepInfo.title}}</h2>
+      <p class="step-description">{{stepInfo.description}}</p>
+      <p class="step-instruction"><strong>{{stepInfo.instruction}}</strong></p>
+    </div>
+
+    {{!-- ================================================================
+      STEP 1: MORTAL LIFE
+    ================================================================= --}}
+    {{#if (eq step 1)}}
+    <div class="wizard-step step-1">
+      <div class="form-group">
+        <label for="mortalName">Mortal Name <span class="required">*</span></label>
+        <input type="text" name="mortalName" id="mortalName"
+               value="{{data.mortalName}}"
+               placeholder="e.g., Henri, son of Jon" required/>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="era">Era</label>
+          <input type="text" name="era" id="era"
+                 value="{{data.era}}"
+                 placeholder="e.g., 13th Century"/>
+        </div>
+        <div class="form-group">
+          <label for="origin">Origin</label>
+          <input type="text" name="origin" id="origin"
+                 value="{{data.origin}}"
+                 placeholder="e.g., Near the Loire Valley, France"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="firstExperience">First Experience <span class="required">*</span></label>
+        <p class="field-hint">This is a broad summary of your vampire's life before becoming undead. Write in first person.</p>
+        <textarea name="firstExperience" id="firstExperience" rows="4"
+                  placeholder="e.g., I am Henri, son of Jon, born near the Loire Valley in the 13th Century of Our Lord; I am a poor knight swindled out of my inheritance."
+                  required>{{data.firstExperience}}</textarea>
+      </div>
+
+      <div class="example-box">
+        <h4>Example First Experiences</h4>
+        <ul>
+          <li>"I am Adira, a Mesopotamian midwife who learned the secrets of life and death from the temple priestesses."</li>
+          <li>"I am Marcus Aurelius Corvinus, a Roman centurion stationed at the edge of the Empire, where strange things happen in the dark forests."</li>
+          <li>"I am Kira, daughter of fishermen on the cold northern coast, marked since birth by the old gods."</li>
+        </ul>
+      </div>
+    </div>
+    {{/if}}
+
+    {{!-- ================================================================
+      STEP 2: MORTAL RELATIONSHIPS
+    ================================================================= --}}
+    {{#if (eq step 2)}}
+    <div class="wizard-step step-2">
+      <div class="add-mortal-form">
+        <div class="form-row">
+          <div class="form-group flex-grow">
+            <label for="newMortalName">Character Name</label>
+            <input type="text" name="newMortalName" id="newMortalName"
+                   placeholder="e.g., Charles"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="newMortalDesc">Description</label>
+          <input type="text" name="newMortalDesc" id="newMortalDesc"
+                 placeholder="e.g., my childhood friend; a fellow knight"/>
+        </div>
+        <button type="button" data-action="addMortal" class="add-button">
+          <i class="fas fa-plus"></i> Add Mortal Character
+        </button>
+      </div>
+
+      <div class="mortals-list">
+        <h4>Mortal Characters ({{data.mortals.length}}/3 minimum)</h4>
+        {{#if data.mortals.length}}
+        <ul class="trait-list">
+          {{#each data.mortals}}
+          <li class="trait-item">
+            <span class="trait-name">{{this.name}}</span>
+            {{#if this.description}}
+            <span class="trait-desc">- {{this.description}}</span>
+            {{/if}}
+            <button type="button" data-action="removeMortal" data-mortal-id="{{this.id}}" class="remove-button">
+              <i class="fas fa-times"></i>
+            </button>
+          </li>
+          {{/each}}
+        </ul>
+        {{else}}
+        <p class="empty-message">No mortal characters yet. Add at least 3.</p>
+        {{/if}}
+      </div>
+
+      <div class="example-box">
+        <h4>Example Mortal Characters</h4>
+        <ul>
+          <li><strong>Charles</strong> - my beloved, a poet and dreamer</li>
+          <li><strong>Father Matthias</strong> - the village priest who taught me to read</li>
+          <li><strong>Gundar</strong> - a Viking jarl, like a father to me</li>
+          <li><strong>Lady Beatrice</strong> - my patron, who sees great things in me</li>
+          <li><strong>The Widow Kessler</strong> - my landlady, who asks too many questions</li>
+        </ul>
+      </div>
+
+      {{#unless canProceed}}
+      <p class="validation-warning"><i class="fas fa-exclamation-triangle"></i> You need at least 3 mortal characters to continue.</p>
+      {{/unless}}
+    </div>
+    {{/if}}
+
+    {{!-- ================================================================
+      STEP 3: SKILLS & RESOURCES
+    ================================================================= --}}
+    {{#if (eq step 3)}}
+    <div class="wizard-step step-3">
+      {{!-- Skills Section --}}
+      <div class="skills-section">
+        <h3><i class="fas fa-star"></i> Skills ({{data.skills.length}}/3 minimum)</h3>
+        <p class="section-hint">Skills describe what your vampire can do - abilities fitting for their mortal life.</p>
+
+        <div class="add-form form-row">
+          <input type="text" name="newSkillName" placeholder="e.g., Swordplay, Herbalism, Courtly Manners"/>
+          <button type="button" data-action="addSkill" class="add-button">
+            <i class="fas fa-plus"></i> Add
+          </button>
+        </div>
+
+        {{#if data.skills.length}}
+        <ul class="trait-list">
+          {{#each data.skills}}
+          <li class="trait-item skill">
+            <span class="trait-name">{{this.name}}</span>
+            <button type="button" data-action="removeSkill" data-skill-id="{{this.id}}" class="remove-button">
+              <i class="fas fa-times"></i>
+            </button>
+          </li>
+          {{/each}}
+        </ul>
+        {{else}}
+        <p class="empty-message">No skills yet. Add at least 3.</p>
+        {{/if}}
+      </div>
+
+      {{!-- Resources Section --}}
+      <div class="resources-section">
+        <h3><i class="fas fa-gem"></i> Resources ({{data.resources.length}}/3 minimum)</h3>
+        <p class="section-hint">Resources are possessions, assets, or structures. They can be anything from a lucky penny to a fleet of warships.</p>
+
+        <div class="add-form">
+          <div class="form-row">
+            <input type="text" name="newResourceName" placeholder="e.g., Father's sword, A small cottage, Gold coins"/>
+            <label class="checkbox-label">
+              <input type="checkbox" name="newResourceStationary"/>
+              Stationary
+            </label>
+            <button type="button" data-action="addResource" class="add-button">
+              <i class="fas fa-plus"></i> Add
+            </button>
+          </div>
+        </div>
+
+        {{#if data.resources.length}}
+        <ul class="trait-list">
+          {{#each data.resources}}
+          <li class="trait-item resource">
+            <span class="trait-name">{{this.name}}</span>
+            {{#if this.stationary}}<i class="fas fa-map-marker-alt" title="Stationary"></i>{{/if}}
+            <button type="button" data-action="removeResource" data-resource-id="{{this.id}}" class="remove-button">
+              <i class="fas fa-times"></i>
+            </button>
+          </li>
+          {{/each}}
+        </ul>
+        {{else}}
+        <p class="empty-message">No resources yet. Add at least 3.</p>
+        {{/if}}
+      </div>
+
+      <div class="example-box">
+        <h4>Example Skills & Resources</h4>
+        <div class="example-columns">
+          <div class="example-column">
+            <strong>Skills:</strong>
+            <ul>
+              <li>Swordplay</li>
+              <li>Relaxing Banter</li>
+              <li>Operate Heavy Machinery</li>
+              <li>Courtly Intrigue</li>
+              <li>Navigation by Stars</li>
+            </ul>
+          </div>
+          <div class="example-column">
+            <strong>Resources:</strong>
+            <ul>
+              <li>Knightly equipage</li>
+              <li>A diamond tiara</li>
+              <li>The Castle Umbrecht (stationary)</li>
+              <li>A loyal servant</li>
+              <li>A hidden treasure map</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {{#unless canProceed}}
+      <p class="validation-warning"><i class="fas fa-exclamation-triangle"></i> You need at least 3 skills and 3 resources to continue.</p>
+      {{/unless}}
+    </div>
+    {{/if}}
+
+    {{!-- ================================================================
+      STEP 4: FORMATIVE MEMORIES
+    ================================================================= --}}
+    {{#if (eq step 4)}}
+    <div class="wizard-step step-4">
+      <div class="traits-reference">
+        <h4>Your Traits to Combine</h4>
+        <div class="trait-columns">
+          <div class="trait-column">
+            <strong>Characters:</strong>
+            {{#each existingTraits.mortals}}
+            <span class="trait-tag mortal">{{this}}</span>
+            {{/each}}
+          </div>
+          <div class="trait-column">
+            <strong>Skills:</strong>
+            {{#each existingTraits.skills}}
+            <span class="trait-tag skill">{{this}}</span>
+            {{/each}}
+          </div>
+          <div class="trait-column">
+            <strong>Resources:</strong>
+            {{#each existingTraits.resources}}
+            <span class="trait-tag resource">{{this}}</span>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="experience2">Second Experience <span class="required">*</span></label>
+        <p class="field-hint">Combine two of your traits (characters, skills, or resources) into an evocative memory.</p>
+        <textarea name="experience2" id="experience2" rows="3"
+                  placeholder="e.g., Gundar takes me on my first voyage aboard the Longship; his touch calms me when we first leave sight of land."
+                  required>{{data.experience2}}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="experience3">Third Experience <span class="required">*</span></label>
+        <p class="field-hint">Another memory combining different traits.</p>
+        <textarea name="experience3" id="experience3" rows="3"
+                  placeholder="e.g., Lady Beatrice gifts me her family's sword after I save her from bandits using my Swordplay."
+                  required>{{data.experience3}}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="experience4">Fourth Experience <span class="required">*</span></label>
+        <p class="field-hint">A third memory that shaped who your vampire was.</p>
+        <textarea name="experience4" id="experience4" rows="3"
+                  placeholder="e.g., Charles reads poetry to me by candlelight in the small cottage; I have never known such peace."
+                  required>{{data.experience4}}</textarea>
+      </div>
+
+      <div class="example-box">
+        <h4>Example Combined Experiences</h4>
+        <ul>
+          <li>"Gundar takes me on my first voyage aboard the Longship Bøkesuden; his touch calms me when we first leave sight of land."</li>
+          <li>"I use my Courtly Intrigue to secure Lady Beatrice's patronage; she grants me lodging in the Castle Umbrecht."</li>
+          <li>"Father Matthias teaches me to read using the illuminated manuscripts; I dream of the strange creatures in their margins."</li>
+        </ul>
+      </div>
+    </div>
+    {{/if}}
+
+    {{!-- ================================================================
+      STEP 5: TRANSFORMATION
+    ================================================================= --}}
+    {{#if (eq step 5)}}
+    <div class="wizard-step step-5">
+      <div class="immortal-section">
+        <h3><i class="fas fa-infinity"></i> Your Creator</h3>
+        <p class="section-hint">The immortal who transformed you - another vampire, demon, spirit, or supernatural being.</p>
+
+        <div class="form-group">
+          <label for="immortalName">Immortal's Name <span class="required">*</span></label>
+          <input type="text" name="immortalName" id="immortalName"
+                 value="{{data.immortalName}}"
+                 placeholder="e.g., Baron Hollmueller"/>
+        </div>
+
+        <div class="form-group">
+          <label for="immortalDescription">Description</label>
+          <input type="text" name="immortalDescription" id="immortalDescription"
+                 value="{{data.immortalDescription}}"
+                 placeholder="e.g., an Austrian noble and a vampire; he stole the deed to my land"/>
+        </div>
+      </div>
+
+      <div class="mark-section">
+        <h3><i class="fas fa-skull"></i> Your Mark</h3>
+        <p class="section-hint">A visible indication of your undying state - something that sets you apart from mortals.</p>
+
+        <div class="form-group">
+          <label for="markDescription">Mark Description <span class="required">*</span></label>
+          <textarea name="markDescription" id="markDescription" rows="2"
+                    placeholder="e.g., My neck is permanently broken; I wear tight scarves and walk slowly to maintain my dignity."
+                    required>{{data.markDescription}}</textarea>
+        </div>
+
+        <div class="example-box small">
+          <h4>Example Marks</h4>
+          <ul>
+            <li>A pair of great bat wings - I cut them off with a saw but the stubs remain</li>
+            <li>My eyes are hypnotic so I must wear smoked glasses</li>
+            <li>Under the Moon my shadow takes the shape of a jaguar</li>
+            <li>Animals fear me, children cry</li>
+            <li>I have hands with fingers bent into backward claws; I wear long sleeves</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="transformation-section">
+        <h3><i class="fas fa-exchange-alt"></i> The Transformation</h3>
+        <p class="section-hint">Describe how you became a creature of the night. This is your fifth and final Experience.</p>
+
+        <div class="form-group">
+          <label for="transformationExperience">Transformation Experience <span class="required">*</span></label>
+          <textarea name="transformationExperience" id="transformationExperience" rows="4"
+                    placeholder="e.g., I duel the eerie Baron Hollmueller across the roof of the abbey; he nearly cuts my head from my shoulders but I do not die."
+                    required>{{data.transformationExperience}}</textarea>
+        </div>
+      </div>
+    </div>
+    {{/if}}
+  </div>
+
+  {{!-- Navigation Buttons --}}
+  <div class="wizard-navigation">
+    {{#unless isFirstStep}}
+    <button type="button" data-action="prevStep" class="nav-button prev">
+      <i class="fas fa-arrow-left"></i> Previous
+    </button>
+    {{/unless}}
+
+    <div class="nav-spacer"></div>
+
+    {{#if isLastStep}}
+    <button type="button" data-action="finishCreation" class="nav-button finish" {{#unless canProceed}}disabled{{/unless}}>
+      <i class="fas fa-check"></i> Create Vampire
+    </button>
+    {{else}}
+    <button type="button" data-action="nextStep" class="nav-button next" {{#unless canProceed}}disabled{{/unless}}>
+      Next <i class="fas fa-arrow-right"></i>
+    </button>
+    {{/if}}
+  </div>
+</div>

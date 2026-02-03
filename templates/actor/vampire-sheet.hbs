@@ -27,9 +27,28 @@
         <span class="skill-count" title="Skills">
           <i class="fas fa-star"></i> {{system.skillCount}} Skills
         </span>
+        <button type="button" class="wizard-button" data-action="launchWizard" title="Launch Character Creation Wizard">
+          <i class="fas fa-magic"></i>
+        </button>
       </div>
     </div>
   </header>
+
+  {{!-- New Character Notice --}}
+  {{#if needsWizard}}
+  <div class="new-character-notice">
+    <div class="notice-content">
+      <i class="fas fa-skull"></i>
+      <div class="notice-text">
+        <strong>Welcome, Fledgling</strong>
+        <p>This vampire has not yet been created. Use the Character Creation Wizard to set up your vampire according to the rules.</p>
+      </div>
+      <button type="button" data-action="launchWizard" class="launch-wizard-button">
+        <i class="fas fa-magic"></i> Launch Creation Wizard
+      </button>
+    </div>
+  </div>
+  {{/if}}
 
   {{!-- ======================================================================
     PROMPT CONTROLS
