@@ -1,0 +1,439 @@
+<form class="{{cssClass}} {{#if isGameOver}}game-over{{/if}}" autocomplete="off">
+
+  {{!-- ======================================================================
+    SHEET HEADER
+  ======================================================================== --}}
+  <header class="sheet-header">
+    <img class="profile-img" src="{{#if actor.img}}{{actor.img}}{{else}}icons/svg/mystery-man.svg{{/if}}"
+         data-action="editImage" title="{{actor.name}}" height="100" width="100"/>
+    <div class="header-fields">
+      <h1 class="vampire-name">
+        <input name="system.biography.currentName" type="text"
+               value="{{system.biography.currentName}}"
+               placeholder="Current Name"/>
+      </h1>
+      <div class="vampire-origin">
+        <input name="system.biography.origin" type="text"
+               value="{{system.biography.origin}}"
+               placeholder="Origin (e.g., 'A French knight, 13th century')"/>
+      </div>
+      <div class="header-stats">
+        <span class="prompt-tracker" title="Current Prompt">
+          <i class="fas fa-scroll"></i> Prompt {{currentPrompt}}
+        </span>
+        <span class="memory-count" title="Active Memories (not in diary, not published)">
+          <i class="fas fa-brain"></i> {{system.activeMemoryCount}}/{{totalMemorySlots}} Memories
+        </span>
+        <span class="skill-count" title="Skills">
+          <i class="fas fa-star"></i> {{system.skillCount}} Skills
+        </span>
+      </div>
+    </div>
+  </header>
+
+  {{!-- ======================================================================
+    PROMPT CONTROLS
+  ======================================================================== --}}
+  <div class="prompt-controls">
+    <div class="current-prompt-display">
+      {{#if currentPromptData}}
+        <strong>Prompt {{currentPrompt}}:</strong>
+        <span class="prompt-preview">{{currentPromptData.a}}</span>
+      {{else}}
+        <em>No prompt data available</em>
+      {{/if}}
+    </div>
+    <div class="prompt-buttons">
+      <button type="button" data-action="rollPromptDice" {{#if isGameOver}}disabled{{/if}}>
+        <i class="fas fa-dice"></i> Roll Prompt Dice (d10 - d6)
+      </button>
+      <div class="manual-prompt">
+        <label>Go to Prompt:</label>
+        <input type="number" name="manual-prompt" min="1" max="70" value="{{currentPrompt}}"/>
+        <button type="button" data-action="goToPrompt" data-prompt="{{currentPrompt}}">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {{!-- ======================================================================
+    TAB NAVIGATION
+  ======================================================================== --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item {{tabs.memories.cssClass}}" data-tab="memories">
+      <i class="fas fa-brain"></i> Memories
+    </a>
+    <a class="item {{tabs.traits.cssClass}}" data-tab="traits">
+      <i class="fas fa-list"></i> Skills & Resources
+    </a>
+    <a class="item {{tabs.characters.cssClass}}" data-tab="characters">
+      <i class="fas fa-users"></i> Characters
+    </a>
+    <a class="item {{tabs.journal.cssClass}}" data-tab="journal">
+      <i class="fas fa-book"></i> Journal
+    </a>
+  </nav>
+
+  {{!-- ======================================================================
+    SHEET BODY
+  ======================================================================== --}}
+  <section class="sheet-body">
+
+    {{!-- ==================================================================
+      MEMORIES TAB
+    =================================================================== --}}
+    <div class="tab memories {{tabs.memories.cssClass}}" data-group="primary" data-tab="memories">
+      <h2>Memories & Experiences</h2>
+      <p class="hint">Each Memory can hold up to 3 Experiences. When you need to add a new Memory but all slots are full, you must strike out an existing Memory (or move it to a Diary).</p>
+
+      {{!-- Memory Slot Management --}}
+      <div class="memory-slots-controls">
+        <span class="slots-info">
+          <strong>Memory Slots:</strong> {{totalMemorySlots}}
+          (Base: {{memorySlots.base}}, Bonus: +{{memorySlots.bonus}}, Lost: -{{memorySlots.lost}})
+        </span>
+        <div class="slots-buttons">
+          <input type="text" name="new-memory-theme" placeholder="Theme (optional, e.g., 'beauty, nature, peace')"/>
+          <button type="button" data-action="addMemorySlot" title="Add Memory Slot (Prompt 52a)">
+            <i class="fas fa-plus"></i> Add Slot
+          </button>
+          <button type="button" data-action="loseMemorySlot" title="Lose Memory Slot Permanently (Prompts 22c, 41a)">
+            <i class="fas fa-minus"></i> Lose Slot
+          </button>
+        </div>
+      </div>
+
+      <div class="memories-grid">
+        {{#each memoriesData as |memory|}}
+        <div class="memory-card {{#if memory.struckOut}}struck-out{{/if}} {{#if memory.inDiary}}in-diary{{/if}} {{#if memory.published}}published{{/if}}">
+          <div class="memory-header">
+            <span class="memory-number">Memory {{memory.number}}</span>
+            {{#if memory.theme}}
+              <span class="memory-theme" title="Theme">{{memory.theme}}</span>
+            {{/if}}
+            {{#if memory.published}}
+              <span class="published-badge"><i class="fas fa-star"></i> Published</span>
+            {{/if}}
+            {{#if memory.inDiary}}
+              <span class="diary-badge"><i class="fas fa-book"></i> In Diary</span>
+            {{/if}}
+            {{#if memory.struckOut}}
+              <span class="struck-badge"><i class="fas fa-times"></i> Forgotten</span>
+            {{/if}}
+            {{#if memory.isAvailable}}
+              <div class="memory-actions">
+                <button type="button" data-action="moveMemoryToDiary" data-memory-index="{{memory.index}}"
+                        title="Move to Diary">
+                  <i class="fas fa-book"></i>
+                </button>
+                {{#if memory.canPublish}}
+                <button type="button" data-action="publishMemory" data-memory-index="{{memory.index}}"
+                        title="Publish (Prompt 33b) - Makes permanent, frees slot">
+                  <i class="fas fa-star"></i>
+                </button>
+                {{/if}}
+                <button type="button" data-action="strikeOutMemory" data-memory-index="{{memory.index}}"
+                        title="Strike Out (Forget)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            {{/if}}
+          </div>
+
+          <div class="experiences">
+            {{#each memory.experiences as |exp idx|}}
+            <div class="experience {{#if (hasContent exp)}}filled{{else}}empty{{/if}}">
+              <label>Experience {{math idx "+" 1}}</label>
+              <textarea name="system.memories.{{memory.index}}.experiences.{{idx}}"
+                        placeholder="Record an experience..."
+                        {{#if memory.struckOut}}disabled{{/if}}
+                        {{#if memory.inDiary}}disabled{{/if}}
+                        {{#if memory.published}}disabled{{/if}}>{{exp}}</textarea>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+        {{/each}}
+      </div>
+
+      {{!-- Diary Section --}}
+      <div class="diary-section">
+        <h3><i class="fas fa-book"></i> Diary</h3>
+        {{#if system.diary.exists}}
+          <p class="diary-description"><em>{{system.diary.description}}</em></p>
+          <p class="hint">Memories in your Diary are preserved but can no longer be modified. You can have up to 4 Memories in your Diary.</p>
+        {{else}}
+          <p class="hint">You don't have a Diary yet. Create one to preserve Memories that would otherwise be lost.</p>
+          <div class="create-diary">
+            <input type="text" name="diary-description" placeholder="Describe your diary (e.g., 'a leather-bound journal')"/>
+            <button type="button" data-action="createDiary">
+              <i class="fas fa-plus"></i> Create Diary
+            </button>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+    {{!-- ==================================================================
+      TRAITS TAB (Skills, Resources, Marks)
+    =================================================================== --}}
+    <div class="tab traits {{tabs.traits.cssClass}}" data-group="primary" data-tab="traits">
+
+      {{!-- Skills Section --}}
+      <div class="skills-section">
+        <h2><i class="fas fa-star"></i> Skills</h2>
+        <p class="hint">Skills can be checked when used. If you need to check a Skill but have none unchecked, lose a Resource instead.</p>
+
+        <div class="add-skill">
+          <input type="text" name="new-skill" placeholder="New skill name..."/>
+          <button type="button" data-action="addSkill">
+            <i class="fas fa-plus"></i> Add Skill
+          </button>
+        </div>
+
+        <div class="skills-list">
+          {{#each skillsData.active as |skill|}}
+          <div class="skill-item {{#if skill.checked}}checked{{/if}}">
+            <span class="skill-name">{{skill.name}}</span>
+            <div class="skill-actions">
+              {{#if skill.checked}}
+                <button type="button" data-action="uncheckSkill" data-skill-id="{{skill.id}}"
+                        title="Uncheck Skill">
+                  <i class="fas fa-check-square"></i>
+                </button>
+              {{else}}
+                <button type="button" data-action="checkSkill" data-skill-id="{{skill.id}}"
+                        title="Check Skill">
+                  <i class="far fa-square"></i>
+                </button>
+              {{/if}}
+              <button type="button" data-action="loseSkill" data-skill-id="{{skill.id}}"
+                      title="Lose Skill">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+
+        {{#if skillsData.lost.length}}
+        <details class="lost-skills">
+          <summary><i class="fas fa-times"></i> Lost Skills ({{skillsData.lost.length}})</summary>
+          <div class="lost-list">
+            {{#each skillsData.lost as |skill|}}
+            <span class="lost-item">{{skill.name}}</span>
+            {{/each}}
+          </div>
+        </details>
+        {{/if}}
+      </div>
+
+      {{!-- Resources Section --}}
+      <div class="resources-section">
+        <h2><i class="fas fa-gem"></i> Resources</h2>
+        <p class="hint">Resources are assets, possessions, or structures. Stationary Resources cannot travel with you.</p>
+
+        <div class="add-resource">
+          <input type="text" name="new-resource" placeholder="New resource name..."/>
+          <label class="checkbox-label">
+            <input type="checkbox" name="new-resource-stationary"/>
+            Stationary
+          </label>
+          <button type="button" data-action="addResource">
+            <i class="fas fa-plus"></i> Add Resource
+          </button>
+        </div>
+
+        <div class="resources-list">
+          {{#each resourcesData.active as |resource|}}
+          <div class="resource-item {{#if resource.stationary}}stationary{{/if}} {{#if resource.isDiary}}is-diary{{/if}}">
+            <span class="resource-name">
+              {{resource.name}}
+              {{#if resource.stationary}}<i class="fas fa-map-marker-alt" title="Stationary"></i>{{/if}}
+              {{#if resource.isDiary}}<i class="fas fa-book" title="Diary"></i>{{/if}}
+            </span>
+            <button type="button" data-action="loseResource" data-resource-id="{{resource.id}}"
+                    title="Lose Resource">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          {{/each}}
+        </div>
+
+        {{#if resourcesData.lost.length}}
+        <details class="lost-resources">
+          <summary><i class="fas fa-times"></i> Lost Resources ({{resourcesData.lost.length}})</summary>
+          <div class="lost-list">
+            {{#each resourcesData.lost as |resource|}}
+            <span class="lost-item">{{resource.name}}</span>
+            {{/each}}
+          </div>
+        </details>
+        {{/if}}
+      </div>
+
+      {{!-- Marks Section --}}
+      <div class="marks-section">
+        <h2><i class="fas fa-skull"></i> Marks</h2>
+        <p class="hint">Marks are visible indications of your undying state or other things that set you apart from mortals.</p>
+
+        <div class="add-mark">
+          <input type="text" name="new-mark" placeholder="Describe a new mark..."/>
+          <button type="button" data-action="addMark">
+            <i class="fas fa-plus"></i> Add Mark
+          </button>
+        </div>
+
+        <div class="marks-list">
+          {{#each marksData.active as |mark|}}
+          <div class="mark-item">
+            <span class="mark-description">{{mark.description}}</span>
+            <button type="button" data-action="removeMark" data-mark-id="{{mark.id}}"
+                    title="Remove Mark">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          {{/each}}
+        </div>
+
+        {{#if marksData.removed.length}}
+        <details class="removed-marks">
+          <summary><i class="fas fa-times"></i> Removed Marks ({{marksData.removed.length}})</summary>
+          <div class="lost-list">
+            {{#each marksData.removed as |mark|}}
+            <span class="lost-item">{{mark.description}}</span>
+            {{/each}}
+          </div>
+        </details>
+        {{/if}}
+      </div>
+    </div>
+
+    {{!-- ==================================================================
+      CHARACTERS TAB
+    =================================================================== --}}
+    <div class="tab characters {{tabs.characters.cssClass}}" data-group="primary" data-tab="characters">
+      <h2><i class="fas fa-users"></i> Characters</h2>
+      <p class="hint">Characters are people with whom your vampire has a relationship. Mortals age and die; Immortals do not.</p>
+
+      <div class="add-character">
+        <input type="text" name="new-character-name" placeholder="Character name..."/>
+        <select name="new-character-type">
+          <option value="mortal">Mortal</option>
+          <option value="immortal">Immortal</option>
+        </select>
+        <input type="text" name="new-character-desc" placeholder="Description..."/>
+        <button type="button" data-action="addCharacter">
+          <i class="fas fa-plus"></i> Add Character
+        </button>
+      </div>
+
+      <div class="characters-grid">
+        {{!-- Living Mortals --}}
+        <div class="character-group mortals">
+          <h3><i class="fas fa-heart"></i> Living Mortals ({{charactersData.mortals.length}})</h3>
+          {{#each charactersData.mortals as |character|}}
+          <div class="character-card mortal">
+            <div class="character-header">
+              <span class="character-name">{{character.name}}</span>
+              <button type="button" data-action="killCharacter" data-character-id="{{character.id}}"
+                      title="Kill Character">
+                <i class="fas fa-skull"></i>
+              </button>
+            </div>
+            <textarea name="system.characters.{{@index}}.description"
+                      placeholder="Description...">{{character.description}}</textarea>
+          </div>
+          {{else}}
+          <p class="empty-message">No living mortals.</p>
+          {{/each}}
+        </div>
+
+        {{!-- Living Immortals --}}
+        <div class="character-group immortals">
+          <h3><i class="fas fa-infinity"></i> Immortals ({{charactersData.immortals.length}})</h3>
+          {{#each charactersData.immortals as |character|}}
+          <div class="character-card immortal">
+            <div class="character-header">
+              <span class="character-name">{{character.name}}</span>
+              <button type="button" data-action="killCharacter" data-character-id="{{character.id}}"
+                      title="Destroy Character">
+                <i class="fas fa-skull"></i>
+              </button>
+            </div>
+            <textarea name="system.characters.{{@index}}.description"
+                      placeholder="Description...">{{character.description}}</textarea>
+          </div>
+          {{else}}
+          <p class="empty-message">No immortals.</p>
+          {{/each}}
+        </div>
+      </div>
+
+      {{!-- Dead Characters --}}
+      {{#if charactersData.dead.length}}
+      <details class="dead-characters">
+        <summary><i class="fas fa-skull"></i> Dead Characters ({{charactersData.dead.length}})</summary>
+        <div class="dead-list">
+          {{#each charactersData.dead as |character|}}
+          <div class="dead-character">
+            <strong>{{character.name}}</strong>
+            {{#if (eq character.type "immortal")}}<span class="type-badge">(Immortal)</span>{{/if}}
+            <p>{{character.description}}</p>
+          </div>
+          {{/each}}
+        </div>
+      </details>
+      {{/if}}
+    </div>
+
+    {{!-- ==================================================================
+      JOURNAL TAB
+    =================================================================== --}}
+    <div class="tab journal {{tabs.journal.cssClass}}" data-group="primary" data-tab="journal">
+      <h2><i class="fas fa-book"></i> Chronicle</h2>
+      <p class="hint">Use this space to write detailed journal entries about your vampire's experiences. This is optional but recommended for the full journaling experience.</p>
+
+      <div class="add-journal-entry">
+        <h3>New Entry for Prompt {{currentPrompt}}</h3>
+        <textarea name="new-journal-entry" rows="6"
+                  placeholder="Write about this prompt... What happened? How did your vampire feel? What decisions did they make?"></textarea>
+        <button type="button" data-action="addJournalEntry">
+          <i class="fas fa-feather"></i> Save Journal Entry
+        </button>
+      </div>
+
+      <div class="journal-entries">
+        {{#each system.journal as |entry|}}
+        <div class="journal-entry">
+          <div class="entry-header">
+            <span class="entry-prompt">Prompt {{entry.promptNumber}}{{entry.entry}}</span>
+          </div>
+          <div class="entry-content">
+            <p>{{entry.content}}</p>
+          </div>
+        </div>
+        {{else}}
+        <p class="empty-message">No journal entries yet. Begin writing your vampire's chronicle!</p>
+        {{/each}}
+      </div>
+
+      {{!-- Game End Controls --}}
+      <div class="game-controls">
+        <h3>Game Controls</h3>
+        {{#if isGameOver}}
+          <div class="game-over-message">
+            <p><strong>This vampire's story has ended.</strong></p>
+            <p>{{system.gameState.endReason}}</p>
+          </div>
+        {{else}}
+          <button type="button" data-action="endGame" class="end-game-button">
+            <i class="fas fa-skull-crossbones"></i> End This Vampire's Story
+          </button>
+        {{/if}}
+      </div>
+    </div>
+
+  </section>
+</form>

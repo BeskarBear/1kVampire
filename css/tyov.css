@@ -1,0 +1,925 @@
+/**
+ * ============================================================================
+ * THOUSAND YEAR OLD VAMPIRE - Main Stylesheet
+ * ============================================================================
+ */
+
+/* =============================================================================
+   CSS CUSTOM PROPERTIES
+============================================================================= */
+:root {
+  --tyov-primary: #2c1810;
+  --tyov-secondary: #5c3a21;
+  --tyov-accent: #8b4513;
+  --tyov-background: #f5f0e8;
+  --tyov-paper: #fdfcf9;
+  --tyov-danger: #8b0000;
+  --tyov-success: #2d5016;
+  --tyov-text: #1a1a1a;
+  --tyov-muted: #666;
+  --tyov-border: #c9b99a;
+  --tyov-gold: #b8860b;
+  --tyov-blood: #8b0000;
+  --tyov-shadow: rgba(0, 0, 0, 0.2);
+}
+
+/* =============================================================================
+   BASE SHEET STYLES
+============================================================================= */
+.tyov.sheet {
+  background: var(--tyov-background);
+  color: var(--tyov-text);
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+.tyov.sheet.game-over {
+  opacity: 0.8;
+}
+
+.tyov.sheet .window-header {
+  background: var(--tyov-primary);
+}
+
+.tyov.sheet .window-header .window-control,
+.tyov.sheet .window-header button {
+  background: transparent;
+  color: var(--tyov-background);
+  border: none;
+  padding: 0;
+}
+
+.tyov.sheet .window-header .window-control:hover,
+.tyov.sheet .window-header button:hover {
+  background: rgba(255,255,255,0.2);
+  color: white;
+}
+
+/* =============================================================================
+   HEADER SECTION
+============================================================================= */
+.tyov .sheet-header {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 3px solid var(--tyov-primary);
+  background: linear-gradient(to bottom, #e8e0d0, var(--tyov-background));
+}
+
+.tyov .profile-img {
+  border: 3px solid var(--tyov-primary);
+  border-radius: 4px;
+  object-fit: cover;
+  cursor: pointer;
+  box-shadow: 2px 2px 8px var(--tyov-shadow);
+}
+
+.tyov .header-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tyov .vampire-name input {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: var(--tyov-primary);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--tyov-border);
+  width: 100%;
+  font-family: inherit;
+}
+
+.tyov .vampire-origin input {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--tyov-muted);
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed var(--tyov-border);
+  width: 100%;
+  font-family: inherit;
+  margin-top: 0.25rem;
+}
+
+.tyov .header-stats {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.tyov .header-stats span {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.tyov .prompt-tracker {
+  color: var(--tyov-gold);
+  font-weight: bold;
+}
+
+.tyov .memory-count {
+  color: var(--tyov-secondary);
+}
+
+/* =============================================================================
+   PROMPT CONTROLS
+============================================================================= */
+.tyov .prompt-controls {
+  background: var(--tyov-paper);
+  border-bottom: 2px solid var(--tyov-border);
+  padding: 0.75rem 1rem;
+}
+
+.tyov .current-prompt-display {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.tyov .prompt-preview {
+  color: var(--tyov-muted);
+  font-style: italic;
+  display: block;
+  margin-top: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tyov .prompt-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tyov .manual-prompt {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.tyov .manual-prompt input {
+  width: 60px;
+  text-align: center;
+}
+
+/* =============================================================================
+   TAB NAVIGATION
+============================================================================= */
+.tyov .sheet-tabs {
+  background: var(--tyov-primary);
+  border: none;
+  margin: 0;
+}
+
+.tyov .sheet-tabs .item {
+  color: var(--tyov-background);
+  padding: 0.6rem 1rem;
+  border: none;
+  opacity: 0.7;
+  transition: all 0.2s;
+}
+
+.tyov .sheet-tabs .item:hover {
+  opacity: 1;
+  text-shadow: 0 0 5px var(--tyov-gold);
+}
+
+.tyov .sheet-tabs .item.active {
+  opacity: 1;
+  background: var(--tyov-secondary);
+}
+
+/* =============================================================================
+   SHEET BODY
+============================================================================= */
+.tyov .sheet-body {
+  padding: 1rem;
+  overflow-y: auto;
+  height: calc(100% - 220px);
+}
+
+.tyov .tab {
+  display: none;
+}
+
+.tyov .tab.active {
+  display: block;
+}
+
+.tyov h2 {
+  color: var(--tyov-primary);
+  border-bottom: 2px solid var(--tyov-accent);
+  padding-bottom: 0.25rem;
+  margin: 0 0 0.75rem 0;
+  font-size: 1.25rem;
+}
+
+.tyov h3 {
+  color: var(--tyov-secondary);
+  margin: 1rem 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.tyov .hint {
+  color: var(--tyov-muted);
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.tyov .empty-message {
+  color: var(--tyov-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* =============================================================================
+   FORM ELEMENTS
+============================================================================= */
+.tyov input[type="text"],
+.tyov input[type="number"],
+.tyov textarea,
+.tyov select {
+  padding: 0.4rem;
+  border: 1px solid var(--tyov-border);
+  border-radius: 3px;
+  background: var(--tyov-paper);
+  color: var(--tyov-text);
+  font-family: inherit;
+}
+
+.tyov input[type="text"],
+.tyov select {
+  width: 100%;
+}
+
+.tyov input[type="number"] {
+  width: 60px;
+  text-align: center;
+}
+
+.tyov textarea {
+  width: 100%;
+  min-height: 60px;
+  resize: vertical;
+}
+
+.tyov input:focus,
+.tyov select:focus,
+.tyov textarea:focus {
+  border-color: var(--tyov-accent);
+  outline: none;
+  box-shadow: 0 0 3px var(--tyov-gold);
+}
+
+.tyov input:disabled,
+.tyov textarea:disabled {
+  background: #ddd;
+  color: #888;
+}
+
+/* =============================================================================
+   BUTTONS
+============================================================================= */
+.tyov form button,
+.tyov .sheet-body button {
+  background: var(--tyov-secondary);
+  color: white;
+  border: none;
+  padding: 0.4rem 0.75rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+
+.tyov form button:hover,
+.tyov .sheet-body button:hover {
+  background: var(--tyov-primary);
+}
+
+.tyov form button i,
+.tyov .sheet-body button i {
+  margin-right: 0.25rem;
+}
+
+.tyov button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =============================================================================
+   MEMORIES SECTION
+============================================================================= */
+
+/* Memory Slot Controls */
+.tyov .memory-slots-controls {
+  background: var(--tyov-paper);
+  border: 1px solid var(--tyov-border);
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tyov .slots-info {
+  color: var(--tyov-secondary);
+}
+
+.tyov .slots-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tyov .slots-buttons input[type="text"] {
+  width: 200px;
+}
+
+.tyov .slots-buttons button {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.tyov .slots-buttons button[data-action="loseMemorySlot"] {
+  background: var(--tyov-danger);
+}
+
+.tyov .memories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tyov .memory-card {
+  background: var(--tyov-paper);
+  border: 2px solid var(--tyov-border);
+  border-radius: 6px;
+  padding: 0.75rem;
+  box-shadow: 2px 2px 6px var(--tyov-shadow);
+}
+
+.tyov .memory-card.struck-out {
+  opacity: 0.5;
+  background: #e0e0e0;
+  border-style: dashed;
+}
+
+.tyov .memory-card.in-diary {
+  border-color: var(--tyov-gold);
+  background: linear-gradient(135deg, #fdf8e8, #f8f0d8);
+}
+
+/* Published memories - special golden styling */
+.tyov .memory-card.published {
+  border-color: var(--tyov-gold);
+  border-width: 3px;
+  background: linear-gradient(135deg, #fff8dc, #faebd7);
+  box-shadow: 0 0 10px rgba(184, 134, 11, 0.3);
+}
+
+.tyov .memory-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--tyov-border);
+}
+
+.tyov .memory-number {
+  font-weight: bold;
+  color: var(--tyov-primary);
+}
+
+.tyov .memory-theme {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--tyov-muted);
+  background: rgba(0,0,0,0.05);
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+}
+
+.tyov .diary-badge,
+.tyov .struck-badge,
+.tyov .published-badge {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+}
+
+.tyov .diary-badge {
+  background: var(--tyov-gold);
+  color: white;
+}
+
+.tyov .struck-badge {
+  background: var(--tyov-danger);
+  color: white;
+}
+
+.tyov .published-badge {
+  background: linear-gradient(135deg, #ffd700, #daa520);
+  color: var(--tyov-primary);
+  font-weight: bold;
+}
+
+.tyov .memory-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.tyov .memory-actions button {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8rem;
+}
+
+.tyov .experiences {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tyov .experience label {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--tyov-muted);
+}
+
+.tyov .experience textarea {
+  min-height: 50px;
+  font-size: 0.9rem;
+}
+
+.tyov .experience.filled textarea {
+  border-color: var(--tyov-accent);
+}
+
+/* =============================================================================
+   DIARY SECTION
+============================================================================= */
+.tyov .diary-section {
+  background: linear-gradient(135deg, #f8f0d8, #f0e8c8);
+  border: 2px solid var(--tyov-gold);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.tyov .diary-section h3 {
+  color: var(--tyov-gold);
+  margin-top: 0;
+}
+
+.tyov .diary-description {
+  color: var(--tyov-secondary);
+}
+
+.tyov .create-diary {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.tyov .create-diary input {
+  flex: 1;
+}
+
+/* =============================================================================
+   SKILLS SECTION
+============================================================================= */
+.tyov .skills-section,
+.tyov .resources-section,
+.tyov .marks-section {
+  background: var(--tyov-paper);
+  border: 1px solid var(--tyov-border);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tyov .add-skill,
+.tyov .add-resource,
+.tyov .add-mark {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.tyov .add-skill input,
+.tyov .add-mark input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.tyov .add-resource input[type="text"] {
+  flex: 1;
+  min-width: 150px;
+}
+
+.tyov .skills-list,
+.tyov .resources-list,
+.tyov .marks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tyov .skill-item,
+.tyov .resource-item,
+.tyov .mark-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: var(--tyov-background);
+  border: 1px solid var(--tyov-border);
+  border-radius: 4px;
+}
+
+.tyov .skill-item.checked {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  border-color: var(--tyov-success);
+}
+
+.tyov .skill-item.checked .skill-name {
+  font-weight: bold;
+}
+
+.tyov .resource-item.stationary {
+  border-left: 4px solid var(--tyov-accent);
+}
+
+.tyov .resource-item.is-diary {
+  border-left: 4px solid var(--tyov-gold);
+}
+
+.tyov .skill-actions,
+.tyov .resource-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.tyov .skill-actions button,
+.tyov .resource-item button,
+.tyov .mark-item button {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8rem;
+}
+
+.tyov .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Lost items */
+.tyov details {
+  background: rgba(0,0,0,0.05);
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.tyov details summary {
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--tyov-muted);
+}
+
+.tyov .lost-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.tyov .lost-item {
+  text-decoration: line-through;
+  color: var(--tyov-muted);
+  font-style: italic;
+  padding: 0.2rem 0.5rem;
+  background: rgba(0,0,0,0.05);
+  border-radius: 3px;
+}
+
+/* =============================================================================
+   CHARACTERS SECTION
+============================================================================= */
+.tyov .add-character {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.tyov .add-character input[type="text"] {
+  flex: 1;
+  min-width: 120px;
+}
+
+.tyov .add-character select {
+  width: auto;
+}
+
+.tyov .characters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.tyov .character-group {
+  background: var(--tyov-paper);
+  border: 1px solid var(--tyov-border);
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.tyov .character-group.mortals {
+  border-left: 4px solid var(--tyov-danger);
+}
+
+.tyov .character-group.immortals {
+  border-left: 4px solid var(--tyov-gold);
+}
+
+.tyov .character-card {
+  background: var(--tyov-background);
+  border: 1px solid var(--tyov-border);
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tyov .character-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.tyov .character-name {
+  font-weight: bold;
+  color: var(--tyov-primary);
+}
+
+.tyov .character-card textarea {
+  min-height: 40px;
+  font-size: 0.85rem;
+}
+
+.tyov .dead-characters {
+  margin-top: 1rem;
+}
+
+.tyov .dead-character {
+  padding: 0.5rem;
+  border-bottom: 1px dotted var(--tyov-border);
+}
+
+.tyov .dead-character:last-child {
+  border-bottom: none;
+}
+
+.tyov .type-badge {
+  font-size: 0.75rem;
+  color: var(--tyov-gold);
+  font-style: italic;
+}
+
+/* =============================================================================
+   JOURNAL SECTION
+============================================================================= */
+.tyov .add-journal-entry {
+  background: var(--tyov-paper);
+  border: 1px solid var(--tyov-border);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tyov .add-journal-entry h3 {
+  margin-top: 0;
+}
+
+.tyov .add-journal-entry textarea {
+  min-height: 120px;
+  margin-bottom: 0.5rem;
+}
+
+.tyov .journal-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tyov .journal-entry {
+  background: var(--tyov-paper);
+  border: 1px solid var(--tyov-border);
+  border-left: 4px solid var(--tyov-accent);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.tyov .entry-header {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px dashed var(--tyov-border);
+}
+
+.tyov .entry-prompt {
+  font-weight: bold;
+  color: var(--tyov-secondary);
+}
+
+.tyov .entry-content p {
+  margin: 0;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* =============================================================================
+   GAME CONTROLS
+============================================================================= */
+.tyov .game-controls {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--tyov-border);
+}
+
+.tyov .end-game-button {
+  background: var(--tyov-danger);
+}
+
+.tyov .end-game-button:hover {
+  background: #660000;
+}
+
+.tyov .game-over-message {
+  background: linear-gradient(135deg, #2c1810, #1a0d08);
+  color: var(--tyov-background);
+  padding: 1rem;
+  border-radius: 6px;
+  text-align: center;
+}
+
+/* =============================================================================
+   CHAT MESSAGE STYLES
+============================================================================= */
+.tyov-roll {
+  padding: 1rem;
+  background: var(--tyov-background);
+  border-radius: 6px;
+  border-left: 4px solid var(--tyov-accent);
+  margin: 0.25rem 0;
+}
+
+.tyov-roll h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--tyov-primary);
+}
+
+.tyov-roll h4 {
+  color: var(--tyov-secondary);
+  margin: 0.5rem 0;
+}
+
+.tyov-roll .dice-results {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  margin: 0.75rem 0;
+  font-size: 1.25rem;
+}
+
+.tyov-roll .die {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--tyov-primary);
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+}
+
+.tyov-roll .die.d10 {
+  background: var(--tyov-secondary);
+}
+
+.tyov-roll .die.d6 {
+  background: var(--tyov-danger);
+}
+
+.tyov-roll .operator {
+  font-weight: bold;
+  color: var(--tyov-muted);
+}
+
+.tyov-roll .result {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.tyov-roll .result.positive {
+  color: var(--tyov-success);
+}
+
+.tyov-roll .result.negative {
+  color: var(--tyov-danger);
+}
+
+.tyov-roll .move-description {
+  text-align: center;
+  font-style: italic;
+  color: var(--tyov-muted);
+}
+
+.tyov-roll .prompt-text {
+  background: var(--tyov-paper);
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--tyov-border);
+  line-height: 1.5;
+}
+
+.tyov-prompt-message {
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8f0d8, #f0e8c8);
+  border-radius: 6px;
+  border: 2px solid var(--tyov-gold);
+}
+
+.tyov-prompt-message h2,
+.tyov-prompt-message h3 {
+  color: var(--tyov-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.tyov-prompt-message .prompt-text {
+  line-height: 1.6;
+}
+
+.tyov-trait-change {
+  padding: 0.5rem 0.75rem;
+  background: var(--tyov-background);
+  border-left: 4px solid var(--tyov-success);
+  border-radius: 4px;
+}
+
+.tyov-trait-change.tyov-loss {
+  border-color: var(--tyov-danger);
+}
+
+.tyov-game-end {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #2c1810, #1a0d08);
+  color: var(--tyov-background);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.tyov-game-end h2 {
+  color: var(--tyov-gold);
+  border: none;
+  margin-bottom: 1rem;
+}
+
+/* =============================================================================
+   RESPONSIVE DESIGN
+============================================================================= */
+@media (max-width: 700px) {
+  .tyov .memories-grid,
+  .tyov .characters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tyov .prompt-buttons {
+    flex-direction: column;
+  }
+
+  .tyov .add-character,
+  .tyov .add-resource {
+    flex-direction: column;
+  }
+}

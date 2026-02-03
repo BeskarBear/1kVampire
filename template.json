@@ -1,0 +1,82 @@
+{
+  "Actor": {
+    "types": ["vampire"],
+    "vampire": {
+      "biography": {
+        "name": "",
+        "origin": "",
+        "era": "",
+        "currentName": ""
+      },
+      "memorySlots": {
+        "base": 5,
+        "bonus": 0,
+        "lost": 0
+      },
+      "memories": [
+        {
+          "id": "memory-1",
+          "theme": "",
+          "experiences": ["", "", ""],
+          "inDiary": false,
+          "struckOut": false,
+          "published": false
+        },
+        {
+          "id": "memory-2",
+          "theme": "",
+          "experiences": ["", "", ""],
+          "inDiary": false,
+          "struckOut": false,
+          "published": false
+        },
+        {
+          "id": "memory-3",
+          "theme": "",
+          "experiences": ["", "", ""],
+          "inDiary": false,
+          "struckOut": false,
+          "published": false
+        },
+        {
+          "id": "memory-4",
+          "theme": "",
+          "experiences": ["", "", ""],
+          "inDiary": false,
+          "struckOut": false,
+          "published": false
+        },
+        {
+          "id": "memory-5",
+          "theme": "",
+          "experiences": ["", "", ""],
+          "inDiary": false,
+          "struckOut": false,
+          "published": false
+        }
+      ],
+      "skills": [],
+      "resources": [],
+      "characters": [],
+      "marks": [],
+      "diary": {
+        "exists": false,
+        "description": "",
+        "maxMemories": 4
+      },
+      "prompts": {
+        "current": 1,
+        "history": [],
+        "visitCounts": {}
+      },
+      "journal": [],
+      "gameState": {
+        "ended": false,
+        "endReason": ""
+      }
+    }
+  },
+  "Item": {
+    "types": []
+  }
+}
