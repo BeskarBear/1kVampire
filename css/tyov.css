@@ -277,6 +277,7 @@
   padding: 1rem;
   overflow-y: auto;
   height: calc(100% - 220px);
+  min-height: 200px;
 }
 
 .tyov .tab {
@@ -1094,7 +1095,9 @@
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 1rem;
-  min-height: 400px;
+  min-height: 300px;
+  max-height: calc(100vh - 280px);
+  overflow-y: auto;
 }
 
 .tyov.character-wizard .step-header {
@@ -1509,5 +1512,32 @@
 
   .tyov.character-wizard .trait-columns {
     flex-direction: column;
+  }
+}
+
+/* Small screen height handling */
+@media (max-height: 700px) {
+  .tyov.character-wizard .wizard-step-content {
+    max-height: calc(100vh - 320px);
+    min-height: 200px;
+  }
+
+  .tyov.character-wizard .wizard-progress {
+    padding: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tyov.character-wizard .step-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .tyov.character-wizard .example-box {
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .tyov .sheet-body {
+    height: calc(100% - 180px);
   }
 }

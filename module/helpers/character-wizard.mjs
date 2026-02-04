@@ -29,7 +29,8 @@ export class CharacterCreationWizard extends HandlebarsApplicationMixin(Applicat
     },
     position: {
       width: 700,
-      height: "auto"
+      height: "auto",
+      top: 50
     },
     form: {
       handler: CharacterCreationWizard.#onFormSubmit,
